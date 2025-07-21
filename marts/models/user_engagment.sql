@@ -33,6 +33,17 @@ select
 user_id,
 event_month,
 query_counts,
+ntile(3) over(order by query_counts desc) ntile_3_buckets, 
+case 
+when 
+ntile_3_buckets = 1 
+or 
+lag(user_id) over(partition by user_id order by last_active_date_in_month asc) is not null
+and 
+(workflow_events >0 and vault_events>0 or 
+workflow_events >0 and assistant_events>0 or 
+vault_events>0 and assistant_events>0) 
+then 'Yes' else 'No' end as power_user_flag,
 round(case when (lag(query_counts) over(partition by user_id order by last_active_date_in_month asc)) is not null then 
 (query_counts - (lag(query_counts) over(partition by user_id order by last_active_date_in_month asc)))/
 (lag(query_counts) over(partition by user_id order by last_active_date_in_month asc)) end ,1) query_growth_mom,

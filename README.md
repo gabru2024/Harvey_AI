@@ -1,6 +1,6 @@
 # Harvey_AI
 
-Quick call outs on data -
+**** Quick call outs on data ****
 No unique/primary_key in events table (event_id or transaction id)
 
 Firms exist without corresponding event records (PK/FK enforcement needed)
@@ -11,15 +11,24 @@ Firms table does not have a deleted_at or deactivated_at (revoking past firms)
 
 Events is missing a Harvey product category (KNOWLEDGE)
 
-Within each event_type/products can have sub_events/sub-categories), data for sub_event_id is missing: (example 
+Within each event_type/products can have sub_events/sub-categories, data for sub_event_ids is missing: (example 
 "Vault" - can store, analyze and do other granular subtasks)
 
+Additional attributes - time spent on query/sessions would be valuable
 
+
+----------------------------------------------------------------------------------------------
 Definitions for a few metrics in dbt models -
 
 User engagement:
 
 query_counts - count of user queries
+
+ntile_3_buckets - buckets query_count totals in desc order into top 3 buckets (this can be expanded based on attribute
+combinations as well)
+
+power_user - ntile_3_buckets = 1 or user with two consecutive monthly events with at least two event type events in 
+current month
 
 query_growth_mom - compares query count for current vs previous month
 
@@ -37,6 +46,8 @@ docs_per_day - documents pulled per active days
 
 user_age_days_in_that_month - user active days since creation (in the event month)
 
+
+----------------------------------------------------------------------------------------------
 
 firm_usage_summary: This is at firm grain
 
